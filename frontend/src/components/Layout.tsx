@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePermissions } from '@/hooks/usePermissions';
 import { useResourceQuery } from '@/lib/queries';
 import { cn } from '@/lib/utils';
+import { Logo } from '@/components/Logo';
 
 interface NavItem {
   label: string;
@@ -69,10 +70,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       >
         {/* Header */}
         <div className="px-5 py-6 border-b border-white/10">
-          <h2 className="text-2xl font-extrabold m-0 tracking-tight bg-gradient-to-r from-[#818cf8] to-[#c4b5fd] bg-clip-text text-transparent">
-            Inventzo
-          </h2>
-          <p className="text-xs text-gray-400 mt-1">{user?.username || 'User'}</p>
+          <Logo size={30} wordmarkClassName="from-[#818cf8] to-[#c4b5fd]" />
+          <p className="text-xs text-gray-400 mt-2">{user?.username || 'User'}</p>
         </div>
 
         {/* Navigation */}

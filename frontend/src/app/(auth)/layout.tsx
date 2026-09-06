@@ -5,6 +5,8 @@
  * Used for login, password reset, and other unauthenticated pages.
  */
 
+import { Logo } from '@/components/Logo';
+
 export default function AuthLayout({
   children,
 }: {
@@ -14,11 +16,9 @@ export default function AuthLayout({
     <div className="flex min-h-screen items-center justify-center bg-page px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-6 animate-fade-in">
         {/* Branding */}
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">
-            Inventzo
-          </h1>
-          <p className="mt-1 text-sm text-[#666]">
+        <div className="flex flex-col items-center text-center">
+          <Logo size={48} />
+          <p className="mt-2 text-sm text-[#666]">
             Inventory &amp; Sales ERP
           </p>
         </div>
