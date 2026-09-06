@@ -106,7 +106,9 @@ REDIS_PASSWORD=${REDIS_PASSWORD}
 SECRET_KEY=${SECRET_KEY}
 
 # --- URLs (same-domain layout: frontend at root, API under /api/v1) ---
-CORS_ORIGINS=https://${FQDN}
+# CORS_ORIGINS is parsed as a JSON array by pydantic-settings (list[str]),
+# so it MUST be valid JSON — a bare URL would fail to parse at startup.
+CORS_ORIGINS=["https://${FQDN}"]
 FRONTEND_BASE_URL=https://${FQDN}
 NEXT_PUBLIC_API_URL=https://${FQDN}/api/v1
 REFRESH_COOKIE_SAMESITE=strict
