@@ -308,18 +308,32 @@ docker exec stockpilot-backend python scripts/create_user.py \
 
 ## Deployment
 
-Invenzo deploys as a self-contained Docker Compose stack (backend API, ARQ worker, frontend, PostgreSQL, Redis) behind a Caddy reverse proxy that terminates HTTPS automatically. The recommended host is a small VPS in a **Johannesburg** region, which gives the lowest latency for West-African (e.g. Nigerian) users while keeping cost around $6–12/month.
+Invenzo deploys as a self-contained Docker Compose stack (backend API, ARQ worker, frontend, PostgreSQL, Redis) behind a Caddy reverse proxy that terminates HTTPS automatically.
 
-**Full step-by-step instructions — server setup, Caddy HTTPS, DNS, data migration off Railway, and Railway shutdown — are in [DEPLOYMENT.md](DEPLOYMENT.md).**
+### How it's hosted
 
-Quick summary:
+Invenzo is **single-tenant**: one running stack serves one business, with its own isolated database, Redis, secrets, and daily backups. Multiple businesses run as separate instances on the same server, each reached at its own subdomain.
 
-1. Provision a small VPS in a Johannesburg region and point your domain's DNS at its IP.
-2. Install Docker + the Compose plugin, clone this repo, and create a production `.env` (see `.env.example`).
-3. Bring up the stack with `docker compose -f docker-compose.production.yml up -d --build` behind Caddy for automatic TLS.
+- **Product domain:** `invenzo.app`
+- **Per-customer subdomain:** each business is served at `<slug>.invenzo.app` (e.g. `bro.invenzo.app`)
+- **Host:** a single small VPS (Hetzner Cloud, CX22 — 2 vCPU / 4 GB, ~$5/month) in the US East (Ashburn) region
+- **Onboarding a new business:** run `scripts/provision_customer.sh <slug> invenzo.app`, which generates that instance's `.env`, per-instance Docker Compose override, and Caddy vhost with fresh secrets and unique ports — no application code changes and no DNS changes (a wildcard `*.invenzo.app` record covers every subdomain).
+
+> **Why one instance per customer:** complete data isolation (a bug can never leak one business's data to another), trivial per-customer backup/restore and deletion, and zero shared state. Several small stacks fit comfortably on one 4 GB box; move a customer to its own VPS whenever it needs more headroom.
+
+### Deploy runbooks
+
+- **[DEPLOY_HETZNER.md](DEPLOY_HETZNER.md)** — the primary, current runbook. Full first-server setup on Hetzner (SSH, wildcard DNS for `invenzo.app`, Docker, Caddy, firewall), deploying the first customer instance, and a reusable "add a new customer" section for onboarding customer #2 and beyond in ~15 minutes.
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** — alternate single-instance runbook for a Johannesburg VPS (lowest latency for West-African users), including data migration off Railway.
+
+Whichever runbook you follow, the shape is the same:
+
+1. Provision a small VPS and point your domain's DNS (a wildcard `*` A record for the subdomain-per-customer model) at its IP.
+2. Install Docker + the Compose plugin and Caddy, then clone this repo.
+3. Generate the instance config (`scripts/provision_customer.sh`) and bring the stack up behind Caddy for automatic TLS.
 4. Migrations run automatically on backend startup (`backend/start.sh` runs `alembic upgrade head`, then launches uvicorn with `WEB_CONCURRENCY` workers). Grab the initial admin's temporary password from the backend logs (search for `Temporary Password`).
 
-> **Why not a free PaaS tier:** free tiers sleep after inactivity (~30s cold starts) and often place servers far from West Africa, both of which hurt the user experience for the target market. A small always-on VPS close to your users is faster and more predictable for a real business.
+> **Why a small always-on VPS over a free PaaS tier:** free tiers sleep after inactivity (~30s cold starts) and often place servers far from your users, both of which hurt the experience for a real business. A small always-on VPS close to your users is faster and more predictable.
 
 ## First-Time Configuration
 
