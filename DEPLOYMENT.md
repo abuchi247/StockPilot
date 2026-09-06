@@ -88,8 +88,8 @@ Log out and back in so your user picks up the `docker` group.
 ## Step 2 — Get the code and configure the environment
 
 ```bash
-git clone https://github.com/abuchi247/StockPilot.git
-cd StockPilot
+git clone https://github.com/abuchi247/Invenzo.git
+cd Invenzo
 
 cp .env.example .env
 ```
@@ -243,7 +243,7 @@ Copy the dump to the server and restore it into the running Postgres container:
 
 ```bash
 # From your laptop
-scp railway_backup_*.dump youruser@YOUR_VPS_IP:~/StockPilot/
+scp railway_backup_*.dump youruser@YOUR_VPS_IP:~/Invenzo/
 
 # On the VPS — restore into the app database
 cat railway_backup_*.dump | docker exec -i stockpilot-postgres \
@@ -282,7 +282,7 @@ Do not delete the Railway backup dump — keep it archived off-site for a while.
 ### Deploying updates
 
 ```bash
-cd ~/StockPilot
+cd ~/Invenzo
 git pull
 docker compose -f docker-compose.production.yml up -d --build
 ```

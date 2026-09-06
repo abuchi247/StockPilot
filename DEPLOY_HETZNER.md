@@ -105,11 +105,11 @@ ufw --force enable
 ## Step 4 — Get the code
 
 ```bash
-git clone https://github.com/abuchi247/StockPilot.git
-cd StockPilot
+git clone https://github.com/abuchi247/Invenzo.git
+cd Invenzo
 ```
 
-Everything below runs from this `~/StockPilot` directory.
+Everything below runs from this `~/Invenzo` directory.
 
 ---
 
@@ -215,7 +215,7 @@ is the same three moves. With the wildcard DNS record from Step 2, you don't
 even touch DNS.
 
 ```bash
-cd ~/StockPilot
+cd ~/Invenzo
 git pull    # make sure you're on the latest code
 
 # 1. Generate the instance (choose a unique slug; SMTP host defaults to Brevo)
@@ -256,7 +256,7 @@ new box, restore that customer's DB dump — see OPERATIONS_RUNBOOK.md §4).
 **Update every customer to the latest code:**
 
 ```bash
-cd ~/StockPilot
+cd ~/Invenzo
 git pull
 for d in customers/*/; do
   slug="$(basename "$d")"

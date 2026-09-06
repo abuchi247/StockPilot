@@ -52,8 +52,8 @@ Invenzo digitizes and streamlines operations for product-based businesses, repla
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/abuchi247/StockPilot.git
-   cd StockPilot
+   git clone https://github.com/abuchi247/Invenzo.git
+   cd Invenzo
    ```
 
 2. **Create environment file**
