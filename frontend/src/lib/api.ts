@@ -71,11 +71,24 @@ api.interceptors.response.use(
     const originalRequest = error.config as RetriableRequestConfig | undefined;
     const requestUrl = originalRequest?.url || '';
 
+    // Pre-authentication endpoints legitimately return 401/403 as part of their
+    // normal flow (wrong password, expired scoped password-change token, no
+    // refresh cookie yet). Their own callers handle those responses. They must
+    // never trigger the global refresh-and-redirect machinery below — doing so
+    // fires /auth/refresh, gets another 401, calls clearAuth(), and hard-
+    // redirects to /login, which bounces the user off the login and
+    // change-password screens (a red error that flashes then vanishes).
+    const isPreAuthEndpoint =
+      requestUrl.includes('/auth/login') ||
+      requestUrl.includes('/auth/refresh') ||
+      requestUrl.includes('/auth/force-change-password') ||
+      requestUrl.includes('/auth/reset-password');
+
     if (
       error.response?.status !== 401 ||
       !originalRequest ||
       originalRequest._retry ||
-      requestUrl.includes('/auth/refresh')
+      isPreAuthEndpoint
     ) {
       return Promise.reject(error);
     }
