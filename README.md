@@ -1,4 +1,12 @@
-# Invenzo — Inventory & Sales ERP
+<div align="center">
+
+<img src="docs/logo.svg" alt="Invenzo logo" width="96" height="96" />
+
+# Invenzo
+
+### Inventory & Sales ERP
+
+</div>
 
 A comprehensive Enterprise Resource Planning system for product-based businesses — inventory, sales, purchasing, and reporting in one place. Built with Python FastAPI, Next.js, PostgreSQL, and Redis.
 
