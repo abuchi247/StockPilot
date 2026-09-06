@@ -41,7 +41,9 @@ set -euo pipefail
 # --- args -------------------------------------------------------------------
 SLUG="${1:-}"
 DOMAIN="${2:-}"
-SMTP_HOST="${3:-smtp.example.com}"
+# SMTP host defaults to Brevo's free relay (smtp-relay.brevo.com). Override with
+# arg 3 only if you use a different provider (e.g. smtp.resend.com).
+SMTP_HOST="${3:-smtp-relay.brevo.com}"
 SMTP_FROM_EMAIL="${4:-no-reply@${DOMAIN:-example.com}}"
 
 if [ -z "$SLUG" ] || [ -z "$DOMAIN" ]; then
@@ -115,7 +117,12 @@ FRONTEND_BIND_ADDR=127.0.0.1
 BACKEND_PORT=${BACKEND_PORT}
 FRONTEND_PORT=${FRONTEND_PORT}
 
-# --- SMTP (required to boot; needed for password-reset emails) ---
+# --- SMTP (required to boot; needed for password-reset EMAILS) ---
+# Defaults are Brevo's free relay. From Brevo -> Settings -> SMTP & API -> SMTP:
+#   SMTP_USERNAME = the "Login" shown there (e.g. 1a2b3c001@smtp-brevo.com)
+#   SMTP_PASSWORD = the value from "Generate SMTP key" (NOT your account password)
+# SMTP_FROM_EMAIL must be a sender/domain you verified in Brevo, or mail bounces.
+# (Admin-driven password reset in Settings works even if these stay blank.)
 SMTP_HOST=${SMTP_HOST}
 SMTP_PORT=587
 SMTP_USERNAME=
@@ -222,10 +229,16 @@ curl https://${FQDN}/health
 Then open https://${FQDN}, log in as \`admin\` with the temporary password, and
 set a new password when prompted.
 
-## 5. SMTP (optional but recommended)
-Password-reset EMAILS require SMTP. Edit \`customers/${SLUG}/.env\` and set
-SMTP_HOST / SMTP_USERNAME / SMTP_PASSWORD / SMTP_FROM_EMAIL, then re-run the
-up command. (Admin-driven password reset in Settings works without SMTP.)
+## 5. SMTP (optional but recommended) — Brevo free tier
+Password-reset EMAILS require SMTP. Host/port/TLS are pre-filled for Brevo's
+free relay. In Brevo -> Settings -> SMTP & API -> SMTP tab:
+  - copy the **Login** into \`SMTP_USERNAME\` (e.g. \`1a2b3c001@smtp-brevo.com\`)
+  - click **Generate SMTP key** and copy it into \`SMTP_PASSWORD\`
+  - set \`SMTP_FROM_EMAIL\` to a sender you verified in Brevo
+    (Senders, domains, IPs). Once \`${DOMAIN}\` is verified there, use
+    \`no-reply@${DOMAIN}\`.
+Then edit \`customers/${SLUG}/.env\` and re-run the up command.
+(Admin-driven password reset in Settings works without SMTP.)
 
 ## Updating this instance later
 \`\`\`bash

@@ -24,10 +24,24 @@ then shows how to add each new customer in ~15 minutes with
 2. **A Hetzner Cloud account** — https://www.hetzner.com/cloud
 3. **An SSH key** on your Mac. Check with `cat ~/.ssh/id_ed25519.pub`; if you
    have none, run `ssh-keygen -t ed25519` first.
-4. **(Recommended) SMTP credentials** for password-reset emails — a free tier at
-   Brevo, Mailgun, or Resend works. The app boots without it and admin-driven
-   password reset (Settings → Reset password) still works; only the emailed
-   self-service reset needs SMTP.
+4. **(Recommended) SMTP credentials** for password-reset emails — the
+   **Brevo free tier** (300 emails/day, no card) is the default this runbook
+   uses; see the Brevo setup box below. The app boots without SMTP and
+   admin-driven password reset (Settings → Reset password) still works, so you
+   can deploy first and add SMTP later — only the emailed self-service reset
+   needs it.
+
+> **Brevo free SMTP (do this once, reuse for every customer):**
+> 1. Sign up at https://www.brevo.com — stay on the **Free** plan (skip/close
+>    any paid-plan upsell; your account is already free).
+> 2. **Senders, domains, IPs** → add and verify a sender email you control
+>    (Brevo emails a confirmation link). Later, verify your domain to send as
+>    `no-reply@yourdomain.com`.
+> 3. **Settings → SMTP & API → SMTP** tab. Note the **Login** (looks like
+>    `1a2b3c001@smtp-brevo.com`) and click **Generate SMTP key** — copy the key
+>    (shown once). Server is `smtp-relay.brevo.com`, port `587`.
+> 4. You'll paste the Login as `SMTP_USERNAME` and the key as `SMTP_PASSWORD`
+>    into each customer's `.env` (Step 6b). The host/port/TLS are pre-filled.
 
 ---
 
@@ -130,7 +144,8 @@ hyphens), e.g. `bro`. Then generate its config:
 
 ```bash
 # scripts/provision_customer.sh <slug> <domain> [smtp_host] [smtp_from_email]
-./scripts/provision_customer.sh bro stockpilot.app smtp.brevo.com no-reply@stockpilot.app
+# SMTP host defaults to Brevo (smtp-relay.brevo.com); pass args only to override.
+./scripts/provision_customer.sh bro stockpilot.app
 ```
 
 This creates `customers/bro/` with a `.env` (fresh secrets), a compose override,
@@ -143,9 +158,11 @@ cat customers/bro/Caddyfile.snippet | sudo tee -a /etc/caddy/Caddyfile
 sudo systemctl reload caddy
 ```
 
-**6b. (If you have SMTP)** edit `customers/bro/.env` and fill in
-`SMTP_USERNAME` and `SMTP_PASSWORD` (host + from-email were set from the
-command above). Skip if deploying without email for now.
+**6b. (If you have Brevo SMTP)** edit `customers/bro/.env` and paste your Brevo
+values: `SMTP_USERNAME` = the Brevo **Login** (e.g. `1a2b3c001@smtp-brevo.com`),
+`SMTP_PASSWORD` = the **SMTP key** you generated, and set `SMTP_FROM_EMAIL` to a
+sender you verified in Brevo. Host/port/TLS are pre-filled to Brevo's relay.
+Skip this if deploying without email for now.
 
 **6c. Bring the stack up** (builds images the first time; subsequent customers
 reuse the cached images and start in seconds):
@@ -201,8 +218,8 @@ even touch DNS.
 cd ~/StockPilot
 git pull    # make sure you're on the latest code
 
-# 1. Generate the instance (choose a unique slug)
-./scripts/provision_customer.sh acme stockpilot.app smtp.brevo.com no-reply@stockpilot.app
+# 1. Generate the instance (choose a unique slug; SMTP host defaults to Brevo)
+./scripts/provision_customer.sh acme stockpilot.app
 
 # 2. Add its Caddy vhost and reload
 cat customers/acme/Caddyfile.snippet | sudo tee -a /etc/caddy/Caddyfile
