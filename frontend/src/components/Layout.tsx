@@ -70,7 +70,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
       >
         {/* Header */}
         <div className="px-5 py-6 border-b border-white/10">
-          <Logo size={30} wordmarkClassName="from-[#818cf8] to-[#c4b5fd]" />
+          <Link
+            href="/dashboard"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Go to dashboard"
+            className="inline-flex rounded-md no-underline transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+          >
+            <Logo size={30} wordmarkClassName="from-[#818cf8] to-[#c4b5fd]" />
+          </Link>
           <p className="text-xs text-gray-400 mt-2">{user?.username || 'User'}</p>
         </div>
 

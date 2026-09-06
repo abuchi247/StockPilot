@@ -1,13 +1,13 @@
 # Deployment Guide — VPS (Johannesburg)
 
-This guide deploys Inventzo (frontend, backend API, background worker,
+This guide deploys Invenzo (frontend, backend API, background worker,
 PostgreSQL, and Redis) to a single small VPS running the production Docker
 Compose stack, with a Caddy reverse proxy for automatic HTTPS. It then covers
 migrating data off the old Railway deployment and shutting Railway down.
 
 ## Why this setup
 
-- **Location matters most for speed.** Inventzo's users are in West Africa
+- **Location matters most for speed.** Invenzo's users are in West Africa
   (e.g. Nigeria). The closest practical cloud region is **Johannesburg (JNB)**
   in South Africa (~40–70 ms round trip to Lagos) versus ~200–250 ms from US
   regions. A multi-call app feels dramatically snappier the closer the server

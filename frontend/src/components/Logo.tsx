@@ -1,9 +1,9 @@
 /**
- * Logo — Inventzo brand mark + optional wordmark.
+ * Logo — Invenzo brand mark + optional wordmark.
  *
  * Renders an inline SVG icon (three stacked inventory bars forming an "I"
  * monogram) so it stays crisp at any size with no network request, plus an
- * optional gradient "Inventzo" wordmark next to it.
+ * optional gradient "Invenzo" wordmark next to it.
  *
  * Usage:
  *   <Logo />                       // mark + wordmark, default size
@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 interface LogoProps {
   /** Pixel size of the square mark. Defaults to 32. */
   size?: number;
-  /** Show the "Inventzo" text next to the mark. Defaults to true. */
+  /** Show the "Invenzo" text next to the mark. Defaults to true. */
   showWordmark?: boolean;
   /** Extra classes on the outer wrapper. */
   className?: string;
@@ -34,7 +34,7 @@ export function Logo({
   wordmarkClassName = 'from-[#667eea] to-[#764ba2]',
 }: LogoProps) {
   // Stable gradient id so multiple Logo instances don't collide.
-  const gradientId = 'inventzo-mark-grad';
+  const gradientId = 'invenzo-mark-grad';
 
   return (
     <div className={cn('flex items-center gap-2.5', className)}>
@@ -45,7 +45,7 @@ export function Logo({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
-        aria-label="Inventzo"
+        aria-label="Invenzo"
         className="shrink-0"
       >
         <defs>
@@ -83,7 +83,7 @@ export function Logo({
           )}
           style={{ fontSize: size * 0.68, lineHeight: 1 }}
         >
-          Inventzo
+          Invenzo
         </span>
       )}
     </div>

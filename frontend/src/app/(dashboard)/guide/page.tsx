@@ -3,7 +3,7 @@
 /**
  * User Guide Page — /guide
  *
- * Interactive accordion guide covering every feature of Inventzo.
+ * Interactive accordion guide covering every feature of Invenzo.
  * Sections follow the natural workflow: first-time setup → daily operations →
  * purchasing → transfers → audits → reports → account management.
  *
@@ -617,7 +617,7 @@ export default function GuidePage() {
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">User Guide</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Step-by-step instructions for every feature in Inventzo.
+          Step-by-step instructions for every feature in Invenzo.
         </p>
       </div>
 
@@ -761,7 +761,7 @@ export default function GuidePage() {
       <p className="pb-2 text-center text-xs text-gray-400">
         Need help?{' '}
         <a
-          href="mailto:support@inventzo.app"
+          href="mailto:support@invenzo.app"
           className="text-[#667eea] hover:underline"
         >
           Contact support
