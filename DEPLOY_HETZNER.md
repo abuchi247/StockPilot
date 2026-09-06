@@ -240,7 +240,7 @@ docker compose --env-file customers/acme/.env \
 
 Each instance:
 - gets its own database, Redis, secrets, and daily backups (fully isolated);
-- is namespaced by `COMPOSE_PROJECT_NAME=stockpilot-<slug>` so containers,
+- is namespaced by `COMPOSE_PROJECT_NAME=invenzo-<slug>` so containers,
   volumes, and networks never collide;
 - publishes on unique loopback ports (derived from the slug) that Caddy proxies.
 

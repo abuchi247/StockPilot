@@ -78,12 +78,12 @@ Invenzo digitizes and streamlines operations for product-based businesses, repla
 
 4. **Database migrations** run automatically inside the backend container before Uvicorn accepts traffic. To re-run them manually (e.g. after adding migrations):
    ```bash
-   docker exec stockpilot-backend alembic upgrade head
+   docker exec invenzo-backend alembic upgrade head
    ```
 
 5. **Retrieve the initial admin password**. On a fresh database (no users), the backend auto-creates an `admin` account with a random temporary password and prints it to the container logs exactly once:
    ```bash
-   docker logs stockpilot-backend 2>&1 | grep "Temporary Password"
+   docker logs invenzo-backend 2>&1 | grep "Temporary Password"
    ```
    You will see output like:
    ```
@@ -95,7 +95,7 @@ Invenzo digitizes and streamlines operations for product-based businesses, repla
 
 7. **Seed default categories** (optional)
    ```bash
-   docker exec stockpilot-backend python scripts/seed_categories.py
+   docker exec invenzo-backend python scripts/seed_categories.py
    ```
    This creates 10 parent categories (Brakes, Filters, Engine Parts, etc.) with 35 subcategories.
 
@@ -110,7 +110,7 @@ Invenzo digitizes and streamlines operations for product-based businesses, repla
 
 9. **Get your admin password.** On a fresh database the backend auto-creates an `admin` account and prints the temporary password to the container logs exactly once:
    ```bash
-   docker logs stockpilot-backend 2>&1 | grep "Temporary Password"
+   docker logs invenzo-backend 2>&1 | grep "Temporary Password"
    ```
    Log in at http://localhost:3000 with username `admin` and that password. You will be prompted to set a new password before accessing the system.
 
@@ -118,7 +118,7 @@ Invenzo digitizes and streamlines operations for product-based businesses, repla
     ```bash
     docker compose down -v          # stops containers and deletes all volumes
     docker compose up --build -d    # rebuilds images and starts fresh
-    docker logs stockpilot-backend 2>&1 | grep "Temporary Password"  # get new password
+    docker logs invenzo-backend 2>&1 | grep "Temporary Password"  # get new password
     ```
 
 > **Local development with hot-reload:** if you want live code reloading on the frontend, stop the frontend container (`docker compose stop frontend`) and run `npm run dev` in the `frontend/` directory instead. The backend services stay in Docker.
@@ -151,14 +151,14 @@ The system follows security best practices for initial credentials:
 If you need to create additional users via CLI, they also require a password change on first login by default:
 
 ```bash
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   --username manager --password TempPass1! --role Manager --email manager@example.com
 ```
 
 To skip the forced password change (e.g., for automated testing), add `--no-force-change`:
 
 ```bash
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   --username testuser --password TestPass1! --role Salesperson --email test@example.com --no-force-change
 ```
 
@@ -288,23 +288,23 @@ This is an internal ERP system — there's no public signup. Admins create user 
 
 ```bash
 # Create an admin (will be required to set own password on first login)
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   --username admin --password TempAdmin1! --role Admin --email admin@example.com
 
 # Create a manager
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   -u manager -p TempMgr1! -r Manager -e manager@example.com
 
 # Create a salesperson
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   -u sales1 -p TempSales1! -r Salesperson -e sales@example.com
 
 # Create a storekeeper
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   -u store1 -p TempStore1! -r Storekeeper -e store@example.com
 
 # Skip forced password change (for testing/automation only)
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   -u testuser -p TestPass1! -r Salesperson -e test@example.com --no-force-change
 ```
 
@@ -366,13 +366,13 @@ This information appears on all generated invoices. To update it later, change t
 
 ```bash
 # Run all backend tests (1116 unit tests)
-docker exec stockpilot-backend pytest
+docker exec invenzo-backend pytest
 
 # Run with verbose output
-docker exec stockpilot-backend pytest -v
+docker exec invenzo-backend pytest -v
 
 # Run specific test file
-docker exec stockpilot-backend pytest tests/unit/test_sales_service.py
+docker exec invenzo-backend pytest tests/unit/test_sales_service.py
 
 # Run locally (requires system Python with deps installed)
 cd backend && pytest --tb=short -q
@@ -407,7 +407,7 @@ cd frontend && npm run perf:lighthouse
 |----------|---------|-------------|
 | `POSTGRES_USER` | `postgres` | PostgreSQL username |
 | `POSTGRES_PASSWORD` | — | PostgreSQL password |
-| `POSTGRES_DB` | `stockpilot` | Database name |
+| `POSTGRES_DB` | `invenzo` | Database name |
 | `DATABASE_URL` | (derived) | Full async connection string (auto-built from above if not set) |
 | `REDIS_URL` | `redis://redis:6379/0` | Redis connection URL for caching and sessions |
 | `JWT_SECRET_KEY` | — | JWT signing secret (min 32 chars in production) |
@@ -438,7 +438,7 @@ The Playwright suite covers browser login and creation/cancellation of an isolat
 Create a dedicated test user first (bypassing the forced password change so Playwright can log in directly):
 
 ```bash
-docker exec stockpilot-backend python scripts/create_user.py \
+docker exec invenzo-backend python scripts/create_user.py \
   -u testuser -p TestPass1! -r Salesperson -e test@example.com --no-force-change
 ```
 

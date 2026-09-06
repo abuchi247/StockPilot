@@ -14,7 +14,7 @@ docker compose up --build -d
 Wait 30 seconds, then get your admin password:
 
 ```bash
-docker logs stockpilot-backend 2>&1 | grep "Temporary Password"
+docker logs invenzo-backend 2>&1 | grep "Temporary Password"
 ```
 
 Open http://localhost:3000 and log in:
@@ -375,7 +375,7 @@ If you need to start over completely:
 ```bash
 docker compose down -v          # Deletes all data
 docker compose up --build -d    # Rebuilds and starts fresh
-docker logs stockpilot-backend 2>&1 | grep "Temporary Password"
+docker logs invenzo-backend 2>&1 | grep "Temporary Password"
 ```
 
 This gives you a clean database with only the admin account and default categories.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Seed connected demo data for reviewing the StockPilot UI.
+"""Seed connected demo data for reviewing the Invenzo UI.
 
 Creates locations, spare parts, suppliers, opening stock (via the purchase
 receive flow so cost layers / ledger / stock cache stay consistent), purchase
@@ -14,7 +14,7 @@ The script is idempotent: it keys demo records by well-known names/part numbers
 and skips creation when they already exist, so it is safe to run repeatedly.
 
 Usage (from inside the backend container):
-    docker exec stockpilot-backend python scripts/seed_demo.py
+    docker exec invenzo-backend python scripts/seed_demo.py
 """
 
 import asyncio

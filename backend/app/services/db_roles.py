@@ -50,7 +50,7 @@ class RoleDefinition:
 
 # Role definitions for documentation and provisioning scripts
 APPLICATION_ROLE = RoleDefinition(
-    name="stockpilot_app",
+    name="invenzo_app",
     role_type=DatabaseRole.APPLICATION,
     description="Application runtime role with DML-only access",
     grants=(
@@ -64,7 +64,7 @@ APPLICATION_ROLE = RoleDefinition(
 )
 
 MIGRATION_ROLE = RoleDefinition(
-    name="stockpilot_migrate",
+    name="invenzo_migrate",
     role_type=DatabaseRole.MIGRATION,
     description="Migration role with DDL+DML for schema changes",
     grants=(
@@ -77,7 +77,7 @@ MIGRATION_ROLE = RoleDefinition(
 )
 
 BACKUP_ROLE = RoleDefinition(
-    name="stockpilot_backup",
+    name="invenzo_backup",
     role_type=DatabaseRole.BACKUP,
     description="Backup role with read-only access for pg_dump",
     grants=(
@@ -94,7 +94,7 @@ ALL_ROLES = (APPLICATION_ROLE, MIGRATION_ROLE, BACKUP_ROLE)
 
 
 def generate_role_sql(
-    database_name: str = "stockpilot",
+    database_name: str = "invenzo",
     schema_name: str = "public",
 ) -> str:
     """Generate SQL statements to create and configure production database roles.
@@ -108,7 +108,7 @@ def generate_role_sql(
     """
     return f"""\
 -- =============================================================================
--- StockPilot Production Database Role Setup
+-- Invenzo Production Database Role Setup
 -- =============================================================================
 -- Execute as a database superuser (e.g., postgres) during initial provisioning.
 -- Passwords must be set separately via ALTER ROLE ... PASSWORD or pg_hba.conf.
@@ -185,9 +185,9 @@ END
 $$;
 
 -- NOTE: Set passwords for login users via:
---   ALTER ROLE stockpilot_app_user PASSWORD '<from-secret-manager>';
---   ALTER ROLE stockpilot_migrate_user PASSWORD '<from-secret-manager>';
---   ALTER ROLE stockpilot_backup_user PASSWORD '<from-secret-manager>';
+--   ALTER ROLE invenzo_app_user PASSWORD '<from-secret-manager>';
+--   ALTER ROLE invenzo_migrate_user PASSWORD '<from-secret-manager>';
+--   ALTER ROLE invenzo_backup_user PASSWORD '<from-secret-manager>';
 """
 
 

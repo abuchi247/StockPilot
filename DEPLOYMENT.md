@@ -101,7 +101,7 @@ Edit `.env` and set production values. The critical ones:
 | `ENVIRONMENT` | `production` |
 | `POSTGRES_USER` | a database user name |
 | `POSTGRES_PASSWORD` | a strong generated password |
-| `POSTGRES_DB` | `stockpilot` |
+| `POSTGRES_DB` | `invenzo` |
 | `REDIS_PASSWORD` | a strong generated password (required in production) |
 | `SECRET_KEY` | a 32+ byte random secret (see below) |
 | `CORS_ORIGINS` | `https://yourdomain.com` |
@@ -187,13 +187,13 @@ plus the scheduled backup service. On first start with an empty database:
 - An initial admin account is auto-provisioned. Get its temporary password:
 
 ```bash
-docker logs stockpilot-backend 2>&1 | grep "Temporary Password"
+docker logs invenzo-backend 2>&1 | grep "Temporary Password"
 ```
 
 Seed the default categories (safe to rerun; skips if any exist):
 
 ```bash
-docker exec stockpilot-backend python scripts/seed_categories.py
+docker exec invenzo-backend python scripts/seed_categories.py
 ```
 
 ---
@@ -246,7 +246,7 @@ Copy the dump to the server and restore it into the running Postgres container:
 scp railway_backup_*.dump youruser@YOUR_VPS_IP:~/Invenzo/
 
 # On the VPS — restore into the app database
-cat railway_backup_*.dump | docker exec -i stockpilot-postgres \
+cat railway_backup_*.dump | docker exec -i invenzo-postgres \
   pg_restore --clean --if-exists --no-owner \
   -U "$POSTGRES_USER" -d "$POSTGRES_DB"
 ```
@@ -255,7 +255,7 @@ Then run migrations to bring the restored schema up to the current head (safe
 if already current):
 
 ```bash
-docker exec stockpilot-backend alembic upgrade head
+docker exec invenzo-backend alembic upgrade head
 ```
 
 Re-verify `https://yourdomain.com/health` and log in to confirm the data is
@@ -307,9 +307,9 @@ Copy dumps off the server periodically (e.g. to object storage). See
 ### Logs
 
 ```bash
-docker logs -f stockpilot-backend
-docker logs -f stockpilot-worker
-docker logs -f stockpilot-frontend
+docker logs -f invenzo-backend
+docker logs -f invenzo-worker
+docker logs -f invenzo-frontend
 ```
 
 ---
@@ -322,5 +322,5 @@ docker logs -f stockpilot-frontend
 | Frontend loads but API calls fail | Confirm `NEXT_PUBLIC_API_URL` was set in `.env` **before** the frontend was built, and that it matches your domain. Rebuild the frontend if it was wrong: `docker compose -f docker-compose.production.yml build frontend && docker compose -f docker-compose.production.yml up -d`. |
 | CORS errors in the browser | `CORS_ORIGINS` must equal your exact frontend origin, e.g. `https://yourdomain.com`. `*` is rejected in production. |
 | Login succeeds but immediately logs out | Cross-site cookie issue. Use the same-domain layout (frontend and API on one domain) with `REFRESH_COOKIE_SAMESITE=strict`, or set `REFRESH_COOKIE_SAMESITE=none` + `REFRESH_COOKIE_SECURE=true` for split hosts. |
-| Backend container restarts / won't start | Check `docker logs stockpilot-backend`. A failed migration stops the container by design rather than serving a partial schema. |
+| Backend container restarts / won't start | Check `docker logs invenzo-backend`. A failed migration stops the container by design rather than serving a partial schema. |
 | Emails not sending | SMTP is used by the **worker**, not just the backend. Confirm the SMTP variables are present for the worker too (they share the same `.env`). |

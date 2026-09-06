@@ -1,5 +1,5 @@
 ###############################################################################
-# Production Dockerfile for StockPilot frontend
+# Production Dockerfile for Invenzo frontend
 # - Multi-stage build: deps → build → runtime
 # - Runs as non-root user
 # - No development mounts or default credentials
@@ -68,7 +68,7 @@ ARG GIT_COMMIT=unknown
 ARG BUILD_DATE=unknown
 LABEL org.opencontainers.image.revision="${GIT_COMMIT}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.source="https://github.com/abuchi247/StockPilot"
+      org.opencontainers.image.source="https://github.com/abuchi247/Invenzo"
 
 # Start the optimized production server
 CMD ["node", "server.js"]

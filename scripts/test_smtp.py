@@ -76,9 +76,9 @@ def main() -> int:
     message = EmailMessage()
     message["From"] = from_email
     message["To"] = args.to
-    message["Subject"] = "StockPilot SMTP test"
+    message["Subject"] = "Invenzo SMTP test"
     message.set_content(
-        "This is a StockPilot SMTP connectivity test.\n\n"
+        "This is a Invenzo SMTP connectivity test.\n\n"
         "If you received this, your SMTP settings work and the app will be able "
         "to send password-reset emails.\n"
     )

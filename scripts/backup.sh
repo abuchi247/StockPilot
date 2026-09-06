@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # =============================================================================
-# StockPilot — PostgreSQL backup script
+# Invenzo — PostgreSQL backup script
 #
 # POSIX sh — compatible with Alpine Linux's /bin/sh (ash/busybox).
 #
@@ -25,8 +25,8 @@
 #   BACKUP_LABEL  Optional filename label   (e.g. "pre-release")
 #
 # Output files (all in BACKUP_DIR):
-#   stockpilot-YYYY-MM-DDTHH-MM-SS[.label].dump        — pg_dump custom format
-#   stockpilot-YYYY-MM-DDTHH-MM-SS[.label].dump.sha256 — SHA-256 checksum
+#   invenzo-YYYY-MM-DDTHH-MM-SS[.label].dump        — pg_dump custom format
+#   invenzo-YYYY-MM-DDTHH-MM-SS[.label].dump.sha256 — SHA-256 checksum
 #   latest.dump                                              — symlink to newest backup
 #   backup.log                                               — append-only run log
 # =============================================================================
@@ -34,7 +34,7 @@ set -eu
 
 PGHOST="${PGHOST:-postgres}"
 PGPORT="${PGPORT:-5432}"
-PGDATABASE="${PGDATABASE:-${POSTGRES_DB:-stockpilot}}"
+PGDATABASE="${PGDATABASE:-${POSTGRES_DB:-invenzo}}"
 PGUSER="${PGUSER:-${POSTGRES_USER:-postgres}}"
 PGPASSWORD="${PGPASSWORD:-${POSTGRES_PASSWORD:-}}"
 BACKUP_DIR="${BACKUP_DIR:-/backups}"
@@ -61,9 +61,9 @@ fi
 # ---- Filename ----------------------------------------------------------------
 TIMESTAMP="$(date -u '+%Y-%m-%dT%H-%M-%S')"
 if [ -n "${BACKUP_LABEL}" ]; then
-    FILENAME="stockpilot-${TIMESTAMP}.${BACKUP_LABEL}.dump"
+    FILENAME="invenzo-${TIMESTAMP}.${BACKUP_LABEL}.dump"
 else
-    FILENAME="stockpilot-${TIMESTAMP}.dump"
+    FILENAME="invenzo-${TIMESTAMP}.dump"
 fi
 FILEPATH="${BACKUP_DIR}/${FILENAME}"
 LOG_FILE="${BACKUP_DIR}/backup.log"
@@ -115,13 +115,13 @@ log "Symlink updated: latest.dump -> ${FILEPATH}"
 
 # ---- Retention ---------------------------------------------------------------
 # Count existing dumps; delete oldest ones beyond the retain limit.
-TOTAL=$(find "${BACKUP_DIR}" -maxdepth 1 -name "stockpilot-*.dump" \
+TOTAL=$(find "${BACKUP_DIR}" -maxdepth 1 -name "invenzo-*.dump" \
           ! -name "*.sha256" | wc -l | tr -d ' ')
 DELETE_COUNT=$((TOTAL - BACKUP_RETAIN))
 
 if [ "${DELETE_COUNT}" -gt 0 ]; then
     log "Retention: keeping ${BACKUP_RETAIN} of ${TOTAL}, removing ${DELETE_COUNT} old backup(s)"
-    find "${BACKUP_DIR}" -maxdepth 1 -name "stockpilot-*.dump" \
+    find "${BACKUP_DIR}" -maxdepth 1 -name "invenzo-*.dump" \
         ! -name "*.sha256" | sort | head -n "${DELETE_COUNT}" | while read -r OLD; do
         log "Removing: ${OLD}"
         rm -f "${OLD}" "${OLD}.sha256"
@@ -129,7 +129,7 @@ if [ "${DELETE_COUNT}" -gt 0 ]; then
 fi
 
 # ---- Summary -----------------------------------------------------------------
-REMAINING=$(find "${BACKUP_DIR}" -maxdepth 1 -name "stockpilot-*.dump" \
+REMAINING=$(find "${BACKUP_DIR}" -maxdepth 1 -name "invenzo-*.dump" \
               ! -name "*.sha256" | wc -l | tr -d ' ')
 log "Done. Retained ${REMAINING}/${BACKUP_RETAIN} backup(s)."
 log "---"
