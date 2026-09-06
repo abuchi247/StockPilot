@@ -1,10 +1,10 @@
-# Deploy StockPilot on a Hetzner VPS (product domain, subdomain per customer)
+# Deploy Inventzo on a Hetzner VPS (product domain, subdomain per customer)
 
-This is the cheap, practical path to run StockPilot for real customers. It uses
-one small Hetzner VPS, a single product domain you own (e.g. `stockpilot.app`),
-and **one isolated instance per customer** served at `<customer>.stockpilot.app`.
+This is the cheap, practical path to run Inventzo for real customers. It uses
+one small Hetzner VPS, a single product domain you own (e.g. `inventzo.app`),
+and **one isolated instance per customer** served at `<customer>.inventzo.app`.
 
-StockPilot is single-tenant — one running stack is one business with its own
+Inventzo is single-tenant — one running stack is one business with its own
 database. This runbook deploys the first customer (your brother's business) and
 then shows how to add each new customer in ~15 minutes with
 `scripts/provision_customer.sh`.
@@ -19,7 +19,7 @@ then shows how to add each new customer in ~15 minutes with
 
 ## What you need before starting
 
-1. **A domain you own** (e.g. `stockpilot.app`). Register at Cloudflare,
+1. **A domain you own** (e.g. `inventzo.app`). Register at Cloudflare,
    Porkbun, or Namecheap (~$10/year). Customers get subdomains of it.
 2. **A Hetzner Cloud account** — https://www.hetzner.com/cloud
 3. **An SSH key** on your Mac. Check with `cat ~/.ssh/id_ed25519.pub`; if you
@@ -70,11 +70,11 @@ subdomain resolves to this server. A **wildcard** record is simplest:
 | A    | `*`   | your server's IPv4   |
 | A    | `@`   | your server's IPv4   |
 
-The `*` record means any `<anything>.stockpilot.app` points at this box, so you
+The `*` record means any `<anything>.inventzo.app` points at this box, so you
 never touch DNS again when adding a customer. Verify (can take a few minutes):
 
 ```bash
-dig bro.stockpilot.app +short    # should print the server IP
+dig bro.inventzo.app +short    # should print the server IP
 ```
 
 ---
@@ -132,7 +132,7 @@ the next step.
 > **Note on certificates:** this runbook uses per-subdomain certificates issued
 > over the HTTP challenge — no DNS API token needed, and each `provision`
 > generates the right vhost block. (If you ever want a single wildcard
-> certificate for `*.stockpilot.app` instead, that requires Caddy's DNS
+> certificate for `*.inventzo.app` instead, that requires Caddy's DNS
 > challenge and a registrar API token — more setup, not needed here.)
 
 ---
@@ -145,7 +145,7 @@ hyphens), e.g. `bro`. Then generate its config:
 ```bash
 # scripts/provision_customer.sh <slug> <domain> [smtp_host] [smtp_from_email]
 # SMTP host defaults to Brevo (smtp-relay.brevo.com); pass args only to override.
-./scripts/provision_customer.sh bro stockpilot.app
+./scripts/provision_customer.sh bro inventzo.app
 ```
 
 This creates `customers/bro/` with a `.env` (fresh secrets), a compose override,
@@ -198,11 +198,11 @@ docker compose --env-file customers/bro/.env \
 ## Step 7 — Verify
 
 ```bash
-curl https://bro.stockpilot.app/health
+curl https://bro.inventzo.app/health
 # → {"status":"healthy", ... database + redis "up"}
 ```
 
-Then open **https://bro.stockpilot.app** in a browser, log in as `admin` with
+Then open **https://bro.inventzo.app** in a browser, log in as `admin` with
 the temporary password from Step 6c, and set a new password when prompted. Have
 your brother start testing.
 
@@ -219,7 +219,7 @@ cd ~/StockPilot
 git pull    # make sure you're on the latest code
 
 # 1. Generate the instance (choose a unique slug; SMTP host defaults to Brevo)
-./scripts/provision_customer.sh acme stockpilot.app
+./scripts/provision_customer.sh acme inventzo.app
 
 # 2. Add its Caddy vhost and reload
 cat customers/acme/Caddyfile.snippet | sudo tee -a /etc/caddy/Caddyfile

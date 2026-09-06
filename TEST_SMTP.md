@@ -60,7 +60,7 @@ Connecting to smtp-relay.brevo.com:587 (TLS=True) as 1a2b3c001@smtp-brevo.com ..
 PASS: message accepted by smtp-relay.brevo.com for delivery to you@example.com.
 ```
 
-Then **check that inbox (and spam)** for a "StockPilot SMTP test" email.
+Then **check that inbox (and spam)** for an "Inventzo SMTP test" email.
 
 Common failures the script explains for you:
 - **authentication rejected** → `SMTP_USERNAME`/`SMTP_PASSWORD` wrong. Username

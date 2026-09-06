@@ -1,12 +1,12 @@
-# StockPilot — Inventory & Sales ERP
+# Inventzo — Inventory & Sales ERP
 
 A comprehensive Enterprise Resource Planning system for product-based businesses — inventory, sales, purchasing, and reporting in one place. Built with Python FastAPI, Next.js, PostgreSQL, and Redis.
 
-> StockPilot currently ships with an automotive spare-parts catalogue out of the box. The core (inventory, sales, customers, suppliers, purchasing, transfers, auditing) is business-agnostic and is being generalized to support additional business types.
+> Inventzo currently ships with an automotive spare-parts catalogue out of the box. The core (inventory, sales, customers, suppliers, purchasing, transfers, auditing) is business-agnostic and is being generalized to support additional business types.
 
 ## Overview
 
-StockPilot digitizes and streamlines operations for product-based businesses, replacing manual spreadsheet and paper-based processes with a modern, scalable ERP solution featuring immutable ledger architecture, FIFO cost management, and snapshot-based auditing.
+Inventzo digitizes and streamlines operations for product-based businesses, replacing manual spreadsheet and paper-based processes with a modern, scalable ERP solution featuring immutable ledger architecture, FIFO cost management, and snapshot-based auditing.
 
 ## Key Capabilities
 
@@ -308,7 +308,7 @@ docker exec stockpilot-backend python scripts/create_user.py \
 
 ## Deployment
 
-StockPilot deploys as a self-contained Docker Compose stack (backend API, ARQ worker, frontend, PostgreSQL, Redis) behind a Caddy reverse proxy that terminates HTTPS automatically. The recommended host is a small VPS in a **Johannesburg** region, which gives the lowest latency for West-African (e.g. Nigerian) users while keeping cost around $6–12/month.
+Inventzo deploys as a self-contained Docker Compose stack (backend API, ARQ worker, frontend, PostgreSQL, Redis) behind a Caddy reverse proxy that terminates HTTPS automatically. The recommended host is a small VPS in a **Johannesburg** region, which gives the lowest latency for West-African (e.g. Nigerian) users while keeping cost around $6–12/month.
 
 **Full step-by-step instructions — server setup, Caddy HTTPS, DNS, data migration off Railway, and Railway shutdown — are in [DEPLOYMENT.md](DEPLOYMENT.md).**
 

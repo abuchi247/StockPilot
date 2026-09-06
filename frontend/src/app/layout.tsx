@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'StockPilot - Inventory & Sales ERP',
+  title: 'Inventzo - Inventory & Sales ERP',
   description: 'Inventory, sales, and business management for any product-based business',
 };
 

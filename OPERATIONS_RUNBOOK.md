@@ -1,6 +1,6 @@
 # Production Operations Runbook
 
-This runbook describes the minimum operating procedure for StockPilot deployments. It applies to the Docker Compose deployment in this repository and to managed container hosts such as Render (see [DEPLOYMENT.md](DEPLOYMENT.md)), and should be reviewed whenever the application, migrations, or infrastructure dependencies change.
+This runbook describes the minimum operating procedure for Inventzo deployments. It applies to the Docker Compose deployment in this repository and to managed container hosts such as Render (see [DEPLOYMENT.md](DEPLOYMENT.md)), and should be reviewed whenever the application, migrations, or infrastructure dependencies change.
 
 ## 1. Release prerequisites and ownership
 

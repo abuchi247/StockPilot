@@ -69,7 +69,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       >
         {/* Header */}
         <div className="px-5 py-6 border-b border-white/10">
-          <h2 className="text-xl font-bold text-white m-0">StockPilot</h2>
+          <h2 className="text-2xl font-extrabold m-0 tracking-tight bg-gradient-to-r from-[#818cf8] to-[#c4b5fd] bg-clip-text text-transparent">
+            Inventzo
+          </h2>
           <p className="text-xs text-gray-400 mt-1">{user?.username || 'User'}</p>
         </div>
 

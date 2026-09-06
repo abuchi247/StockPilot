@@ -1,4 +1,4 @@
-# StockPilot — Setup & Operations Guide (SOP)
+# Inventzo — Setup & Operations Guide (SOP)
 
 A step-by-step guide for business owners setting up the system for the first time. Follow each phase in order.
 

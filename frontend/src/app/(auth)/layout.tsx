@@ -15,8 +15,8 @@ export default function AuthLayout({
       <div className="w-full max-w-md space-y-6 animate-fade-in">
         {/* Branding */}
         <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-[#333]">
-            StockPilot
+          <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">
+            Inventzo
           </h1>
           <p className="mt-1 text-sm text-[#666]">
             Inventory &amp; Sales ERP
