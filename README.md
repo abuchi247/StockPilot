@@ -331,6 +331,7 @@ Invenzo is **single-tenant**: one running stack serves one business, with its ow
 
 ### Deploy runbooks
 
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** — the big picture: architecture diagrams, the decisions behind the deployment (tenancy, hosting, DNS, HTTPS), and a one-page customer-onboarding quick reference + checklist. Start here to understand how the whole thing fits together.
 - **[DEPLOY_HETZNER.md](DEPLOY_HETZNER.md)** — the primary, current runbook. Full first-server setup on Hetzner (SSH, wildcard DNS for `invenzo.app`, Docker, Caddy, firewall), deploying the first customer instance, and a reusable "add a new customer" section for onboarding customer #2 and beyond in ~15 minutes.
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** — alternate single-instance runbook for a Johannesburg VPS (lowest latency for West-African users), including data migration off Railway.
 
